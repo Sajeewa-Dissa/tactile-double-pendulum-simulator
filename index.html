@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/9.3.2/math.min.js"></script>
+    <script type="module" src="./index.js"></script>
+    <script type="module" src="./slidingCanvas.js"></script>
+    <script type="module" src="./controlPanel.js"></script>
+    <script type="module" src="./drawing.js"></script>
+    <script type="module" src="./pendulum.js"></script>
+    <link rel="icon" href="favicon.ico" type="image/x-icon" />
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="style.css">
+    <title>Tactile Double Pendulum Simulator</title>
+</head>
+
+<body>
+    <div id="page-container">
+        <img src="logo.png" alt="lab logo" class="logo">
+        <header class="header">
+            <h1>Tactile Double Pendulum Simulator</h1>
+            <p>Modelling a double-pendulum in JavaScript with modules and re-usable classes.</p>
+        </header>
+        <div></div>
+        <div></div>
+        <div class="mainParent">
+            <div class="mainChild">
+                <canvas id="canvasLeft" width="500" height="500"></canvas>
+            </div>
+            <div  class="mainChild" id="optionalCanvasContainer">
+                <canvas id="canvasRight" width="500" height="500"></canvas>
+            </div>
+    
+            <div class="mainChild controlPanel">
+                <div class="iconBtnContainer">
+                    <button id="btnRefresh" type="button" class="iconBtn" title="Refresh motion and reset trace"><span>&#x27f3;</span></button>
+                    <button id="btnPlayPause" type="button" class="iconBtn" title="Play/Pause"><span>&#x23F8;</span></button>
+                    <button id="btnReset" type="button" class="iconBtn" title="Reset control panel"><span>&#x21ba;</span></button>
+                </div>
+
+                <div>
+                    <button id="showHideToggle" class="btn" title="Show/hide duplicate pendulum">Show Duplicate</button>
+                    <button id="credits" class="btn" title="Credits and discussion">Credits and Discussion</button>
+                </div>
+
+                <div>
+                    <input type="checkbox" id="tracingEnable" checked="checked"><label>Apply tracing to bottom bob(s)</label>
+                </div>
+                <div>
+                    <input type="checkbox" id="dampingEnable" checked="checked"><label>Apply damping to motion</label>
+                </div>
+    
+                <input type="hidden" id="gravId" value="5">
+                <input type="hidden" id="dampId" value="5">
+                <input type="hidden" id="c1MainBobMassId" value="50">  
+                <input type="hidden" id="c1MainBobLengthId" value="50">  
+                <input type="hidden" id="c2MainBobMassId" value="50">  
+                <input type="hidden" id="c2MainBobLengthId" value="50">   
+                        
+                <div>
+                    <div class="range-wraps1">
+                        <div><label>Gravity</label></div>
+                        <div><input id="rangeGrav" type="range" min="1" max="10" value="5" step="1"></div>
+                        <div><label id="displayGrav"></label></div>
+                        <div><label>Damping (log)</label></div>
+                        <div><input id="rangeDamp" type="range" min="1" max="10" value="5" step="1"></div>
+                        <div><label id="displayDamp"></label></div>
+                    </div>
+                </div>
+    
+                <div class="card">
+                    <h5>Main Pendulum</h5>
+                    <div class="range-wraps2">
+                        <div><label>Top bob mass (%)</label></div>
+                        <div><input id="rangeC1Mass" type="range" min="5" max="95" value="50" step="5"></div>
+                        <div><label id="displayC1Mass"></label></div>
+                        <div><label>Top rod length (%)</label></div>
+                        <div><input id="rangeC1Length" type="range" min="5" max="95" value="50" step="5"></div>
+                        <div><label id="displayC1Length"></label></div>
+                    </div>
+                </div>
+    
+                <div class="card invisible" id="secondPendulumCard">
+                    <h5>Duplicate Pendulum</h5>
+                    <div class="range-wraps2">
+                        <div><label>Top bob mass (%)</label></div>
+                        <div><input id="rangeC2Mass" type="range" min="5" max="95" value="50" step="5"></div>
+                        <div><label id="displayC2Mass"></label></div>
+                        <div><label>Top rod length (%)</label></div>
+                        <div><input id="rangeC2Length" type="range" min="5" max="95" value="50" step="5"></div>
+                        <div><label id="displayC2Length"></label></div>
+                    </div>
+                </div>
+    
+                <div class="fade" id="fadeInOut">Pendulum bottom bob can be positioned with the mouse pointer.</div>
+            </div>
+        </div>
+        <div></div>
+
+        <div></div>
+        <div class="footer">
+            <p>&#169;<small> Copyright 2023 Sajeewa Dissanayake</small></p>
+        </div>
+        <div></div>
+
+    </div>
+
+    <dialog id="creditsDialog" class="modal-dialog">
+        <div></div>
+        <header class="modal-header">
+            Credits and Discussion
+        </header>
+        <div></div>
+        <div></div>
+        <main class="modal-content">
+            <p>My original source code is available at <a href="//github.com/Sajeewa-Dissa/tactile-double-pendulum-simulator" target="_blank">github.com/Sajeewa-Dissa/tactile-double-pendulum-simulator</a></p>
+            <h3>Credits</h3>
+            <p>The original idea for this project came from <a href="//www.youtube.com/watch?v=uWzPe_S-RVE&t=29s" target="_blank">this</a> video from the fantastic <cite>The Coding Train</cite> YouTube channel.
+                 All the equations of motion shown in this video, and in my code, came from the <a href="//www.myphysicslab.com/pendulum/double-pendulum-en.html" target="_blank">www.myphysicslab.com</a> website.</p>
+            <p>The formulae for calculating the perpendicular axes of a kite-shape were mined from the <a href="//www.1728.org/quadkite.htm" target="_blank">www.1728.org/quadkite.htm</a> web page.</p>
+            <p>The sliding animation effect Js and css for the duplicate canvas element was taken from <a href="//codepen.io/ivanwebstudio/pen/OJVzPBL" target="_blank">this</a> codepen</p>
+            <p>The arbitrary log damping function and the transition effects on the Credits and Discussion page were perfected using conversations with ChatGPT which was able to give clues to a correct implementation.</p>
+                
+            <h3>Discussion</h3>
+            <p>There are many excellent double-pendulum and hanging-chain simulator examples in JavasScript available online. The Coding Train YouTube video showcases a version of this and invites the viewer to develop the example further.
+                As well as adding a control panel for interactivity, I have added a "tactile" element by allowing the base bob in each double-pendulum to be manipulated by mouse-click events.</p>
+            <p>The only "innovation" and original functionality in this project is the code that allows the pendulum bobs and rods to be positioned dynamically by moving the various sliders in conjunction with 
+                the ability to grab and drag the base bob itself. The formulae for the internal axes of a kite become necessary when the rod lengths of the pendulum vary, further complicated by (attempting to)
+                drag the bob beyond its natural physical range.
+            </p>
+            <p>Encapsulating the various functions into a Pendulum class allows multiple instances of this class to be invoked from the main web page. This ability is used to create a duplicate pendulum, with minimal additional code.</p>
+
+            <p>Finally, it must be stated that this simulator has no utility but as a JavaScript demo. The motion it describes is not applicable to real physics and the units applied to the equations of motion
+                (pixels and frame ticks) don't correspond to the real world. Damping is modelled in a simplisitic way and the value of the gravitational constant G is chosen arbitrarily to make the pendulum appear realistic.
+            </p>
+            
+            <h3>Ideas for Further Improvements</h3>
+            <ol class="customIndent">
+                    <li>Implement a responsive layout and augment the mouse events for touch screen devices.</li>
+                    <li>Make ControlPanel a true class and bind the Pendulum class to its constructor in order to share events between them, or simplify events in some other way.</li>
+                    <li>The sliding canvas effect should be implemented using more css and less Js, and can probably be reworked with better use of css transition effects.</li>
+                    <li>The motion of the pendulum bobs tend to chaos at very high velocities (when manipulating the slider controls). Investigate the cause.</li>
+                    <li>The pendulum motion has a "feature" caused by changing the relative pendulum rod lengths in some scenarios. When motion is paused and the bob lengths
+                        are extended or contracted such that the main bob position must be changed; it causes the pendulum bob positions to jump when motion is resumed. Is there a way to limit this?</li>
+                </ul>
+        </main>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div>
+            <button id="closeDialog" class="btn" title="Close">Close</button>
+        </div>
+    </dialog>
+
+    <!-- Overlay for modal dialog -->
+	<div class="modal-overlay"></div>
+
+</body>
+</html>

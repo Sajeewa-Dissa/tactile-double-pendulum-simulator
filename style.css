@@ -1,0 +1,272 @@
+*{margin:0; padding:0;}
+
+body {
+    background-color: #222;
+    color:aliceblue;
+    min-width:1350px;
+}
+
+#page-container {
+    min-height: 100vh;
+    display:grid;
+    place-items: center;
+    grid-template-columns: 100px auto 100px;
+    grid-template-rows: 100px auto 50px;
+  }
+
+.header {
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 10px;
+    color: white;
+    width:100%;
+}
+
+.header > h1 {
+    font-size:2rem;
+    margin:10px 0 5px 0;
+    padding: 0;
+}
+
+.header > p{
+    font-size:1.2rem;
+    margin:5px 0 10px 0;
+}
+
+.mainParent {
+    display: flex;
+    height:100%;
+    align-items:flex-start;
+    gap: 10px;
+  }
+  
+  .mainChild {
+    width: 500px;
+  }
+  
+  .controlPanel {
+    display: flex;
+    flex-direction:column;
+    width: 350px;
+   }
+  
+  .controlPanel > div {
+    display:inline;
+    margin-top:5px;
+  }
+  
+  canvas {
+    margin: auto;
+    display: block;
+    cursor: default;
+    border-radius: 10px;
+    border: 1px solid #449;
+  }
+  
+  canvas.grabbable {
+    cursor: grab;
+  }
+  
+  canvas.grabbing {
+    cursor: grabbing;
+  }
+
+.footer {
+    text-align: center;
+    bottom: 0;
+    height: 3rem;
+    color: #aaaaaa;
+    width:100%;
+}
+
+label {
+    font-family: monospace;
+    color:cornflowerblue; 
+    margin-left: 4px;
+  }
+  
+.btn{ 
+    border:none;
+    padding:15px;
+    margin: 20px 10px 10px 0px;
+    cursor:pointer;
+    background:dodgerblue;
+    color:aliceblue;
+    outline: none;
+    transition: 0.5s ease;
+    border-radius: 15px;
+    text-align: center;
+  }
+  
+.btn:hover{
+    background-color: #2AF;
+  }
+  
+.btn:active {
+    background-color: #35F;
+  }
+
+.iconBtnContainer{
+  padding: 25px 0 10px 0;
+}
+
+.iconBtn {
+    border: none;
+    padding: 5px 5px;
+    font-size: 25px;
+    font-weight: bold;
+    text-align: center;
+    color:dodgerblue;
+    background-color: #222; ;
+    accent-color: #222; ;
+    cursor:pointer;
+  }
+  
+.iconBtn:hover{
+    color: #2AF;
+  }
+  
+.iconBtn:enabled:active{ /* buttons can be active and disabled, so need to specify this is for active and enabled */
+    color: #35F;
+  }
+  
+.iconBtn:disabled{
+    opacity: 0.4; 
+  }
+  
+  
+input[type="checkbox"] {
+    filter: sepia(100%) brightness(80%) hue-rotate(170deg) saturate(70%) contrast(300%);
+  }
+  
+input[type=range] {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 160px;
+    accent-color: dodgerblue;
+    background-color: rebeccapurple;
+    border-radius: 2px;
+    width:150px;
+    height:5px;
+  }
+  
+.range-wraps1{
+    display: grid;
+    grid-template-columns: 35% 45% 20%;
+    margin-bottom:10px;
+  }
+  
+.range-wraps2{
+    display: grid;
+    grid-template-columns: 45% 45% 10%;
+  }
+  
+  
+#optionalCanvasContainer {
+    color:white;
+    box-sizing: border-box;
+    max-width:500px;
+  }
+  
+.card {
+    margin:20px 10px 10px 0;
+    border-radius: 10px;
+    border: 1px solid #449;
+    padding: 5px;
+    margin-top: 20px; 
+    width: 335px;
+    transition: opacity 0.5s ease-in-out, visibility 0.5s;
+  }
+
+.card.invisible{
+  flex-grow: 0;
+  visibility: hidden;
+  opacity: 0;
+}
+
+.card:has(.visible){
+  opacity: 1;
+  flex-grow: 1;
+  visibility: visible;
+}
+  
+#fadeInOut {
+    opacity: 1;
+    transition: 1s opacity;
+    text-align: center;
+    font-size:1.2em;
+    color:cornflowerblue;
+  }
+  
+#fadeInOut.fade {
+    opacity: 0;
+    transition: 1s opacity;
+  }
+
+/* Modal Dialog//////////////////////////////////////////////////////////////////////// */
+
+/* Style for overlay */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.8s ease-in-out, visibility 0s ease-in-out 0.8s;
+  }
+
+/* Style for modal dialog */
+dialog.modal-dialog {
+    background-color: #222;
+    height: 96vh;
+    width: 96vw;
+    color:aliceblue;
+    display:grid;
+    place-items: center;
+    grid-template-columns: 100px auto 100px;
+    grid-template-rows: 100px auto 100px;
+    transform: translate(2%, 2%);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.8s ease-in-out, visibility 0s ease-in-out 0.8s;
+  }
+
+/* Fade in and out transition effect */
+.modal-overlay.show, dialog.modal-dialog.show {
+    opacity: 1;
+    visibility: visible;
+    transition-delay: 0s;
+  }
+
+dialog.modal-dialog a{
+  color: skyblue;
+}
+
+
+.modal-header{
+    font-size:2rem;
+    margin:20px 0 0 0;
+}
+  
+.modal-content{
+    display:flex;
+    flex-direction:column;
+    margin:10px;
+    align-self:start;
+    gap: 10px;
+}
+
+.modal-content h3{
+  margin:20px 0 0 0;
+}
+
+.customIndent {
+    margin-left: 15px;
+  }
+
+
+
